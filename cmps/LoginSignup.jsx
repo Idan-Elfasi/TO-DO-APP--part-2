@@ -1,12 +1,15 @@
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { userService } from '../services/user.service.js'
+import {signup , login} from '../store/user.action.js'
 
 const { useState } = React
+const { useNavigate } = ReactRouter
 
-export function LoginSignup({ onSetUser }) {
+export function LoginSignup() {
 
     const [isSignup, setIsSignUp] = useState(false)
     const [credentials, setCredentials] = useState(userService.getEmptyCredentials())
+    const navigate = useNavigate()
 
     function handleChange({ target }) {
         const { name: field, value } = target
@@ -20,19 +23,19 @@ export function LoginSignup({ onSetUser }) {
 
 
     function onLogin(credentials) {
-        isSignup ? signup(credentials) : login(credentials)
+        isSignup ? userSignup(credentials) : userLogin(credentials)
     }
 
-    function login(credentials) {
-        userService.login(credentials)
-            .then(onSetUser)
+    function userLogin(credentials) {
+        login(credentials)
+        .then(()=> {navigate('/todo')})
             .then(() => { showSuccessMsg('Logged in successfully') })
             .catch((err) => { showErrorMsg('Oops try again') })
     }
 
-    function signup(credentials) {
-        userService.signup(credentials)
-            .then(onSetUser)
+    function userSignup(credentials) {
+        signup(credentials)
+        .then(()=> {navigate('/todo')})
             .then(() => { showSuccessMsg('Signed in successfully') })
             .catch((err) => { showErrorMsg('Oops try again') })
     }
@@ -70,7 +73,10 @@ export function LoginSignup({ onSetUser }) {
             </form>
 
             <div className="btns">
-                <a href="#" onClick={() => setIsSignUp(!isSignup)}>
+                <a href="#" onClick={() => {
+                    setIsSignUp(!isSignup)
+                    navigate('/todo')
+                    }}>
                     {isSignup ?
                         'Already a member? Login' :
                         'New user? Signup here'

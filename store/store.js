@@ -1,6 +1,8 @@
 const {createStore,combineReducers,compose} = Redux
 
 import { todoService } from "../services/todo.service.js"
+import { userService } from "../services/user.service.js"
+import { utilService } from "../services/util.service.js"
 
 export  const INCREMENT='INCREMENT'
 export  const SET_TODOS ='SET_TODOS'
@@ -9,13 +11,15 @@ export  const ADD_TODO ='ADD_TODO'
 export  const UPDATE_TODO ='UPDATE_TODO'
 export const SET_IS_LOADING='SET_IS_LOADING'
 export const SET_FILTER_BY='SET_FILTER_BY'
+export const SET_USER='SET_USER'
 
 
 const initialState={
 count:50,
 todos:[],
 isLoading:false,
-filterBy: todoService.getDefaultFilter()
+filterBy: todoService.getDefaultFilter(),
+loggedinUser:userService.getLoggedinUser(),
 }
 
 function appReducer(state=initialState,action={}){
@@ -39,6 +43,8 @@ function appReducer(state=initialState,action={}){
 
             case  SET_FILTER_BY:
                return {...state ,filterBy: {...state.filterBy, ...action.filterBy} }  
+            case  SET_USER:
+               return {...state,loggedinUser:action.loggedinUser }  
 
     
         default:

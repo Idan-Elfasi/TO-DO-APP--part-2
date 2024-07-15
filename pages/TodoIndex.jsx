@@ -14,7 +14,7 @@ const { Link, useSearchParams } = ReactRouterDOM
 
 export function TodoIndex() {
     const dispatch = useDispatch()
-    const countLoaded = useRef(0)
+    
     const todos = useSelector(state => state.todos)
     const Loading = useSelector(state => state.isLoading)
     const filterBy = useSelector(state => state.filterBy)
