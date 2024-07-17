@@ -20,6 +20,9 @@ export function TodoEdit() {
             .catch(err => console.log('err:', err))
     }
 
+    const rgbToHex = (r, g, b) =>
+        ((r << 16) + (g << 8) + b).toString(16).padStart(6, '0');
+
     function handleChange({ target }) {
         const field = target.name
         let value = target.value
@@ -33,6 +36,8 @@ export function TodoEdit() {
             case 'checkbox':
                 value = target.checked
                 break
+            //    case 'color':
+            //     value= rgbToHex(value)
 
             default:
                 break
@@ -54,7 +59,7 @@ export function TodoEdit() {
             })
     }
 
-    const { txt, importance, isDone } = todoToEdit
+    const { txt, importance, isDone,color } = todoToEdit
 
     return (
         <section className="todo-edit">
@@ -68,6 +73,8 @@ export function TodoEdit() {
                 <label htmlFor="isDone">isDone:</label>
                 <input onChange={handleChange} value={isDone} type="checkbox" name="isDone" id="isDone" />
 
+                <label htmlFor="color">Select your favorite color:</label>
+                <input onChange={handleChange}  value={color} type="color" id="color" name="color" />
 
                 <button>Save</button>
             </form>
