@@ -34,11 +34,6 @@ export function AppHeader() {
             dispatch({type:INCREMENT})
     }
 
-    function onSetUser(user) {
-
-        // setUser(user)
-        navigate('/')
-    }
     return (
         <header className="app-header full main-layout">
             <section className="header-container">
