@@ -8,8 +8,8 @@ import { userService } from "../services/user.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 
 import { loadToDos, removeToDo, saveToDo } from "../store/todo.action.js"
-import { SET_FILTER_BY } from "../store/store.js"
 import { taskComplete } from "../store/user.action.js"
+import { SET_FILTER_BY } from "../store/reducers/todo.reducer.js"
 
 const { useState, useEffect, useRef } = React
 
@@ -19,9 +19,9 @@ const { Link, useSearchParams } = ReactRouterDOM
 export function TodoIndex() {
     const dispatch = useDispatch()
     
-    const todos = useSelector(state => state.todos)
-    const Loading = useSelector(state => state.isLoading)
-    const filterBy = useSelector(state => state.filterBy)
+    const todos = useSelector(state => state.todoModule.todos)
+    const Loading = useSelector(state => state.todoModule.isLoading)
+    const filterBy = useSelector(state => state.todoModule.filterBy)
  
     // Special hook for accessing search-params:
     const [searchParams, setSearchParams] = useSearchParams()

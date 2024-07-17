@@ -7,7 +7,6 @@ import { userService } from '../services/user.service.js'
 import { UserMsg } from "./UserMsg.jsx"
 import { LoginSignup } from './LoginSignup.jsx'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
-import { INCREMENT } from '../store/store.js'
 import {logout} from '../store/user.action.js'
 
 
@@ -15,9 +14,8 @@ import {logout} from '../store/user.action.js'
 export function AppHeader() {
     const dispatch=useDispatch()
     
-    const count=useSelector(state=>state.count)
     const navigate = useNavigate()
-    const user = useSelector ( state =>  state.loggedinUser)
+    const user = useSelector ( state =>  state.userModule.loggedinUser)
     
     function onLogout() {
         logout()
@@ -31,7 +29,6 @@ export function AppHeader() {
                 showErrorMsg('OOPs try again')
             })
 
-            dispatch({type:INCREMENT})
     }
 
     return (
