@@ -30,6 +30,7 @@ export function TodoIndex() {
      } , [filterBy])
 
     function onRemoveTodo(todoId) {
+        confirm(` remove todo ${todoId} ?`)
         removeToDo(todoId)
             .then(() => showSuccessMsg(`Todo removed`))
             .catch(err => {
