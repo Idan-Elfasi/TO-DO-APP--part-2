@@ -10,6 +10,6 @@ const rootReducer=combineReducers({
     todoModule: todoReducer,
     userModule: userReducer
 })
-export const store = createStore(rootReducer,composeEnhancers)
+export const store = createStore(rootReducer,composeEnhancers())
 
 window.gStore = store
