@@ -34,6 +34,11 @@ function signup({ username, password, fullname }) {
     const user = { username, password, fullname }
     user.createdAt = user.updatedAt = Date.now()
 
+     user.data={
+        balance: 10000,
+        activities: [{txt: 'sign up to the app', at: Date.now()|| 1523873242735}]
+    }
+
     return storageService.post(STORAGE_KEY, user)
         .then(_setLoggedinUser)
 }
@@ -48,7 +53,7 @@ function getLoggedinUser() {
 }
 
 function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname }
+    const userToSave = { _id: user._id, fullname: user.fullname,data:user.data }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
 }
@@ -58,6 +63,7 @@ function getEmptyCredentials() {
         fullname: '',
         username: 'muki',
         password: 'muki1',
+
     }
 }
 
