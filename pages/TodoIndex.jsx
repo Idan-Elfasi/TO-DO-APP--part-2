@@ -1,11 +1,15 @@
 import { TodoFilter } from "../cmps/TodoFilter.jsx"
 import { TodoList } from "../cmps/TodoList.jsx"
 import { DataTable } from "../cmps/data-table/DataTable.jsx"
+
 import { todoService } from "../services/todo.service.js"
+import { userService } from "../services/user.service.js"
+
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 
 import { loadToDos, removeToDo, saveToDo } from "../store/todo.action.js"
 import { SET_FILTER_BY } from "../store/store.js"
+import { taskComplete } from "../store/user.action.js"
 
 const { useState, useEffect, useRef } = React
 
@@ -40,10 +44,11 @@ export function TodoIndex() {
     }
 
     function onToggleTodo(todo) {
+        
         const todoToSave = { ...todo, isDone: !todo.isDone }
-        // todoService.save(todoToSave)
-        //     .then((savedTodo) => {
-        //         setTodos(prevTodos => prevTodos.map(currTodo => (currTodo._id !== todo._id) ? currTodo : { ...savedTodo }))
+
+        if( todoToSave.isDone )  taskComplete()
+        // console.log('userBalance : ' + user.data.balance);
         saveToDo(todoToSave)
             .then(() => showSuccessMsg(`Todo is ${(todoToSave.isDone) ? 'done' : ' still not done,back on your list'}`))
             .catch(err => {
@@ -51,6 +56,7 @@ export function TodoIndex() {
                 showErrorMsg('Cannot toggle todo ' + todo._Id)
             })
     }
+
     function onSetFilterBy(filterBy){
         dispatch ({type:SET_FILTER_BY, filterBy})
     }

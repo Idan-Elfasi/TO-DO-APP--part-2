@@ -1,5 +1,5 @@
 import { userService } from "../services/user.service.js";
-import { store, SET_USER } from "./store";
+import { store, SET_USER, SET_USER_BALANCE } from "./store";
 
 
 export function login(credentials) {
@@ -13,4 +13,11 @@ export function signup(credentials) {
  export function logout() {
   return  userService.logout()
         .then(() => { store.dispatch({ type: SET_USER, loggedinUser: null }) })
+}
+export function taskComplete(){
+    userService.updateScore(10)
+    .then((balance ) => {
+        console.log(`balance : ${balance}`)
+        store.dispatch( { type: SET_USER_BALANCE, balance})
+    })
 }

@@ -8,7 +8,9 @@ export const userService = {
     signup,
     getById,
     query,
-    getEmptyCredentials
+    getEmptyCredentials,
+    updateScore,
+
 }
 const STORAGE_KEY_LOGGEDIN = 'user'
 const STORAGE_KEY = 'userDB'
@@ -34,10 +36,12 @@ function signup({ username, password, fullname }) {
     const user = { username, password, fullname }
     user.createdAt = user.updatedAt = Date.now()
 
-     user.data={
+    user.data =
+    {
         balance: 10000,
-        activities: [{txt: 'sign up to the app', at: Date.now()|| 1523873242735}]
+        activities: [{ txt: 'sign up to the app', at: Date.now() || 1523873242735 }]
     }
+
 
     return storageService.post(STORAGE_KEY, user)
         .then(_setLoggedinUser)
@@ -53,11 +57,29 @@ function getLoggedinUser() {
 }
 
 function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname,data:user.data }
+    const userToSave = { _id: user._id, fullname: user.fullname, data:user.data }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
 }
+// function updateUserData(user){
+// const userToSave = { _id: user._id, fullname: user.fullname,data:user.data }
+// sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
 
+// return userToSave
+function updateScore(diff) {
+    const loggedInUserId = getLoggedinUser()._id
+    return userService.getById(loggedInUserId)
+        .then(user => {
+            if (user.data.balance + diff < 0) return Promise.reject('No credit')
+            user.data.balance += diff
+            return storageService.put(STORAGE_KEY, user)
+        })
+        .then(user => {
+            _setLoggedinUser(user)
+            return user.data.balance
+        })
+}
+// }
 function getEmptyCredentials() {
     return {
         fullname: '',
